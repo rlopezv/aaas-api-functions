@@ -7,8 +7,7 @@ const MAX_ROWS = 20;
 /**
  * Retrieves last stored telemetry for identified plant
  */
-module.exports = async function (context, req) {
-    context.log('Start ItemRead');
+module.exports = function (context, req) {
     const id = req.params.id;
     var rows = 1;
     if (req.params.size) {
@@ -19,7 +18,7 @@ module.exports = async function (context, req) {
         }
        
     }
-    var query = new azure.TableQuery().top(rows).where('deviceId == ?',id);
+    var query = new azure.TableQuery().top(rows).where('device == ?',id);
     // return the top x items
     tableService.queryEntities(tableName, query, null, function (error, result, response) {
         if (!error) {
@@ -28,5 +27,4 @@ module.exports = async function (context, req) {
             context.res.status(500).json({ error: error });
         }
     });
-
 };
